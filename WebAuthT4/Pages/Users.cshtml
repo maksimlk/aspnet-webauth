@@ -1,0 +1,94 @@
+﻿@page
+@model WebAuthT4.Pages.UsersModel
+@{
+	ViewData["Title"] = "User List";
+}
+
+<h1>All Users</h1>
+<br />
+<form method="post">
+<nav class="navbar navbar-light">
+	<div>
+		<input type="checkbox" id="checkAll" /> Check All | Uncheck All
+	</div>
+
+	<div class="btn-toolbar">
+		<button asp-page-handler="DeleteUsers" value="Delete" class="btn btn-sm btn-danger float-end" id="deleteBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"> Delete </button>
+		<button asp-page-handler="BlockUsers" value="Block" class="btn btn-sm btn-warning float-end" id="blockBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Block">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+			<path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" /> </svg>
+		</button>
+		<button asp-page-handler="UnblockUsers" value="Unblock" class="btn btn-sm btn-success float-end" id="unblockBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Unblock">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-unlock" viewBox="0 0 16 16">
+			<path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2zM3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H3z"></path></svg>
+		</button>
+	</div>
+</nav>
+<table class="table table-striped table-hover" id="userTable">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.WebUser[0].UserIndex)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.WebUser[0].UserFullName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.WebUser[0].Email)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.WebUser[0].LastLoginTime)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.WebUser[0].RegistrationTime)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.WebUser[0].UserStatus)
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@for (int i = 0; i < Model.WebUser.Count; i++)
+		{
+			<tr>
+				<th>
+					<input type="hidden" asp-for="@Model.WebUser[i].Selection.Value"/>
+					<input asp-for="@Model.WebUser[i].Selection.Selected" />
+					<input type="hidden" asp-for="@Model.WebUser[i].UserID" />
+					@Html.DisplayFor(modelItem => Model.WebUser[i].UserIndex)
+				</th>
+				<td>
+					@Html.DisplayFor(modelItem => Model.WebUser[i].UserFullName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.WebUser[i].Email)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.WebUser[i].LastLoginTime)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.WebUser[i].RegistrationTime)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.WebUser[i].UserStatus)
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+</form>
+
+
+<script type="text/javascript">
+	$("#checkAll").click(function () {
+		$('input:checkbox').not(this).prop('checked', this.checked);
+	});
+</script>
+
+<script type="text/javascript">
+	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+	var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+		return new bootstrap.Tooltip(tooltipTriggerEl)
+	})
+</script>
+
