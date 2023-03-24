@@ -67,7 +67,8 @@ namespace WebAuthT4.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Column("UserFullName")]
-            [Required(ErrorMessage = "Name is required")]
+			[StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
+			[Required(ErrorMessage = "Name is required")]
             [DataType(DataType.Text)]
             [Display(Name = "Full Name")]
             public string UserFullName { get; set; }

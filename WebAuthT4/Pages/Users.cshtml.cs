@@ -102,12 +102,13 @@ namespace WebAuthT4.Pages
 			{
 				return RedirectToAction(nameof(Index));
 			}
-			user.UserStatus = "Blocked";
 			var currentRoles = await _userManager.GetRolesAsync(user);
 			if(currentRoles.Count == 0)
 				return RedirectToAction(nameof(Index));
 			await _userManager.RemoveFromRoleAsync(user, "ActiveUser");
-			user.LockoutEnd = DateTime.MaxValue;
+			user.UserStatus = "Blocked";
+			await _userManager.SetLockoutEndDateAsync(user, DateTime.Now);
+			await _userManager.UpdateAsync(user);
 			await _userManager.UpdateSecurityStampAsync(user);
 			var currentUser = await _userManager.GetUserAsync(User);
 			if (currentUser == user)
@@ -132,12 +133,13 @@ namespace WebAuthT4.Pages
 			{
 				return RedirectToAction(nameof(Index));
 			}
-			user.UserStatus = "Active";
 			var currentRoles = await _userManager.GetRolesAsync(user);
 			if(currentRoles.Contains("ActiveUser"))
 				return RedirectToAction(nameof(Index));
 			await _userManager.AddToRoleAsync(user, "ActiveUser");
-			user.LockoutEnd = DateTime.Now;
+			await _userManager.SetLockoutEndDateAsync(user, DateTime.Now);
+			user.UserStatus = "Active";
+			await _userManager.UpdateAsync(user);
 
 			return RedirectToAction(nameof(Index));
 		}

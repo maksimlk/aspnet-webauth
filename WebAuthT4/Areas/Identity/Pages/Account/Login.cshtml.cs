@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebAuthT4.Areas.Identity.Data;
+using WebAuthT4.Data;
 
 namespace WebAuthT4.Areas.Identity.Pages.Account
 {
@@ -108,6 +109,7 @@ namespace WebAuthT4.Areas.Identity.Pages.Account
                 {
                     var user = await _userManager.FindByEmailAsync(Input.Email);
                     user.LastLoginTime= DateTime.Now;
+                    await _userManager.UpdateAsync(user);
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
